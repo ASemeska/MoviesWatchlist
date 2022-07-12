@@ -44,6 +44,7 @@ header {
 .movie-search-bar, .movie-search-button{
     margin-top: 1em;
     padding: 0.7em;
+    border: 0.5px solid rgb(82, 82, 82);
 }
 
 .movie-search-bar{
@@ -54,9 +55,25 @@ header {
 .movie-search-button{
     min-width: 2em;
     align-self: center;
-    border: 1px solid rgb(82, 82, 82);
     margin-left: 1em;
     border-radius:50%;
 
 
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0.4;
+}
+
+.container > img{
+    margin-top: 10em;
+    height: 8em;
+    color: rgb(82, 82, 82);
+}
+
+.container >p{
+    font-weight: 900;
 }
