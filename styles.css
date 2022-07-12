@@ -35,3 +35,28 @@ header {
     padding-right: 3em;
     
 }
+
+.form-container{
+    display: flex;
+    justify-content: center;
+}
+
+.movie-search-bar, .movie-search-button{
+    margin-top: 1em;
+    padding: 0.7em;
+}
+
+.movie-search-bar{
+    min-width: 80%;
+    border-radius: 20px;
+}
+
+.movie-search-button{
+    min-width: 2em;
+    align-self: center;
+    border: 1px solid rgb(82, 82, 82);
+    margin-left: 1em;
+    border-radius:50%;
+
+
+}
