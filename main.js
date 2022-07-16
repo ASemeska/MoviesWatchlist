@@ -8,6 +8,7 @@ let postsArray = []
 
 
 formInput.addEventListener("click", (e) =>{
+    postsContainer.innerHTML = ""
     console.log("clicked")
     e.preventDefault()
     fetch(`http://www.omdbapi.com/?s=${searchBar.value}&apikey=33902d14`)
@@ -20,15 +21,18 @@ formInput.addEventListener("click", (e) =>{
             .then(res => res.json())
             .then(data =>{
                 postsArray.push(data)
-                renderPosts()   
+                renderPosts()  
                 
             })
         }
-        searchBar.value = ""
         console.log(postsArray)
 })
+
+
    
 })
+
+document.getElementById("reset-btn").addEventListener("click", () => location.reload())
 
 const renderPosts = () =>{
     let html = ""
@@ -37,6 +41,12 @@ const renderPosts = () =>{
     for(let post of postsArray){
         html += `
         <h3 class "title">${post.Title}</h3>
+        <p>⭐ ${post.imdbRating}</p>
+        <p>${post.Genre}</p>
+        <img src ="${post.Poster}">
+        <p>${post.Plot}</p>
+
+
         
         `
     }
