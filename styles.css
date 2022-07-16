@@ -53,12 +53,21 @@ header {
 }
 
 .movie-search-button{
-    min-width: 2em;
+    min-width: 3em;
     align-self: center;
+    background-image: url("./assets/search.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    border: none;
+    background-color: white;
     margin-left: 1em;
     border-radius:50%;
 
 
+}
+.movie-search-button:hover{
+    cursor: pointer;
 }
 
 .container{
