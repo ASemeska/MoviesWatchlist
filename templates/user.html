@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title%}Movie search{% endblock %}
+
+{% block content%}
+<form action="#" method="POST">
+    {{form.hidden_tag()}}
+<p id="search">Movies search:</p>
+<p>{{form.title(class_="input-submit")}}</p>
+<p id = "submit-btn">{{form.submit(class_="form-btn")}}</p>
+</form>
+<h1 class="title" id="title">{{data['Search'][0]['Title']}}</h1>
+
+{% endblock %}
+<!-- {% for i in range(10) %}
+{{ data['Search'][i]['Title'] }}
+{% endfor %} -->
