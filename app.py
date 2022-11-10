@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, jsonify, make_response
 from flask_login import LoginManager,UserMixin,login_user
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
@@ -82,24 +82,47 @@ def register():
 
 @app.route("/user", methods=['GET', 'POST'])
 def user():
-    form = MovieForm()
-    movie_title =form.title.data
-    api = 'http://www.omdbapi.com/?s={movie_title}&apikey=33902d14'
-    if form.validate_on_submit():
-     api = f'http://www.omdbapi.com/?s={movie_title}&apikey=33902d14'
+    # form = MovieForm()
+    # movie_title =form.title.data
+    # api = 'http://www.omdbapi.com/?s={movie_title}&apikey=33902d14'
+    # if form.validate_on_submit():
+    #  api = f'http://www.omdbapi.com/?s={movie_title}&apikey=33902d14'
      
-    else:
-        print("hello") #return error
-    req = requests.get(api)
-    data = req.json()
-    display_data = data['Search']
-    print(movie_title)
-    print(len(display_data))
+    # else:
+    #     print("hello") #return error
+    # req = requests.get(api)
+    # data = req.json()
+    # display_data = data['Search']
+    # print(movie_title)
+    # print(len(display_data))
     
-    return render_template("user.html", form=form, data=data)
+    return render_template("user.html")
 
 
 
 if __name__ == "__main__":
     app.run(debug=True)
 
+
+#Is JS object
+#  req = request.get_json()
+
+# res = make_response(jsonify({"message": "JSON received"}), 200)
+
+# return res
+
+
+#JS window.origin grab URL to fetch
+
+#fetch(`${window.origin}/user`, {
+# method: "POST",
+# credentials: "include",
+# body: JSON.stringify(entry)
+# cache: "no-cache"
+# headers: new Headers({
+#   "content-typye: "aplication/json""
+# })
+# 
+# })
+
+#
