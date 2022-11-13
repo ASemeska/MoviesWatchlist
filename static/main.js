@@ -68,7 +68,7 @@ class MoviePost{
 }
 
 const getFullMoviedata = async () =>{
-    let moviesId = await getMovieId() //Getting full movie info
+        let moviesId = await getMovieId() //Getting full movie info
     let fullDataArray = []
     for (let id in moviesId){
        let response = await fetch (`http://www.omdbapi.com/?i=${moviesId[id]}&apikey=33902d14`)
@@ -86,13 +86,23 @@ const getFullMoviedata = async () =>{
         button.id = fullDataArray[i].imdbID
         let title = fullDataArray[i].Title
         const buttonContainer = document.getElementById(title)
-        button.addEventListener("click", function (){ //Cia siunciamas kodas i Python
-            console.log(button.id)
-        })
         buttonContainer.appendChild(button)
-        console.log(container)
-    }
+        button.addEventListener("click", function (){
+            fetch(`${window.origin}/user-watchlist`, {     
+                method: "POST",
+                credentials: "include",
+                body: JSON.stringify(button.id),
+                cache: "no-cache",
+                headers: new Headers({
+                    "content-type": "application/json"})
+            })
+
+
+        }
+    )}
+
 
 }
+ //Cia siunciamas kodas i Python
 
-
+           

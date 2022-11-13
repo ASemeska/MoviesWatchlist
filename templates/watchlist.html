@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title%}Watchlist{% endblock %}
+
+{% block content%}
+{% for post in posts %}
+  <li><h2>{{ post[0] }}</h2>
+      {% for column in post %}
+          {% if not loop.first %}{{ column }}<br />{% endif %}
+      {% endfor %}
+  </li>
+{% endfor %}
+{% endblock %}

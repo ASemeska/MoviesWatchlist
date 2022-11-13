@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, redirect, url_for, jsonify, make_response
+from flask import Flask, render_template, redirect, url_for, jsonify, make_response, request
 from flask_login import LoginManager,UserMixin,login_user
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
@@ -9,7 +9,9 @@ from wtforms import StringField,PasswordField,SubmitField,IntegerField, FloatFie
 from wtforms.validators import DataRequired, ValidationError, EqualTo
 import requests
 import json
-import asyncio
+import sqlite3
+
+
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
@@ -18,9 +20,16 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'da
 app.config['SECRET_KEY'] = '152asdqwe4887159a'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db, render_as_batch=True)
+movie_set = set()
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+
+
+def get_db_connection():
+    conn = sqlite3.connect('database.db')
+    conn.row_factory = sqlite3.Row
+    return conn
 #++++++++++++++++CLASES++++++++++++++++#
 class User(db.Model, UserMixin):
     __tablename__ = "user"
@@ -29,6 +38,8 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(80), nullable=False)
 
+class Watchlist_item(db.Model):
+    id = db.Column(db.String(20), primary_key=True, nullable=False)
 
 @login_manager.user_loader
 def load_user(user_email):
@@ -40,6 +51,7 @@ class RegisterForm(FlaskForm):
     password = PasswordField('Password', [DataRequired()])
     approved_password = PasswordField("Repeat password", [EqualTo('password', "Passwords needs to match")])
     submit = SubmitField('Register')
+
 
     def validate_username(self, username):
         existing_user_username = User.query.filter_by(username=username.data).first()
@@ -82,47 +94,38 @@ def register():
 
 @app.route("/user", methods=['GET', 'POST'])
 def user():
-    # form = MovieForm()
-    # movie_title =form.title.data
-    # api = 'http://www.omdbapi.com/?s={movie_title}&apikey=33902d14'
-    # if form.validate_on_submit():
-    #  api = f'http://www.omdbapi.com/?s={movie_title}&apikey=33902d14'
-     
-    # else:
-    #     print("hello") #return error
-    # req = requests.get(api)
-    # data = req.json()
-    # display_data = data['Search']
-    # print(movie_title)
-    # print(len(display_data))
-    
     return render_template("user.html")
+    
+@app.route("/user-watchlist", methods=['GET', 'POST'])
+def get_Watchlist():
+    req = request.get_json()
+  
+    movie_set.add(req)
+    for x in movie_set:
+        exists = Watchlist_item.query.filter_by(id = x).first()
+        if exists:
+            print("it exists")
+        else:
+            new_entry = Watchlist_item(id = x)
+            db.session.add(new_entry)
+            db.session.commit()
+        
+       
 
+    res = make_response(jsonify(req), 200)
+    return res
+
+@app.route('/watchlist', methods=['GET', 'POST'])
+def display_Watchlist():
+    conn = get_db_connection()
+    posts = conn.execute('SELECT * FROM watchlist_item').fetchall()
+
+        
+    return render_template("watchlist.html", posts=posts)
+  
+    
 
 
 if __name__ == "__main__":
     app.run(debug=True)
 
-
-#Is JS object
-#  req = request.get_json()
-
-# res = make_response(jsonify({"message": "JSON received"}), 200)
-
-# return res
-
-
-#JS window.origin grab URL to fetch
-
-#fetch(`${window.origin}/user`, {
-# method: "POST",
-# credentials: "include",
-# body: JSON.stringify(entry)
-# cache: "no-cache"
-# headers: new Headers({
-#   "content-typye: "aplication/json""
-# })
-# 
-# })
-
-#
