@@ -7,12 +7,10 @@ let container = document.getElementById("container")
 
 searchBarSubmit.addEventListener("click", (e) =>{
     e.preventDefault()
-    awaitMovie()
+    getMovieId()
+    getFullMoviedata()
     container.innerHTML = ""
-    searchBarValue.value = ""
-
-    
-    
+    searchBarValue.value = ""  
     
 })
 
@@ -21,29 +19,80 @@ const getMovies = async () =>{
     `)
     if (!response.ok) {
         const message = `An error has occured: ${response.status}`
-        throw new Error(message)
-       
+        throw new Error(message)   
     }
     let data = await response.json()
-    console.log(data)
+    if(data.Response == 'False'){
+        const displayMessage = `An error has occured: ${data.Error} Please search again`
+        container.innerHTML = displayMessage
+    }
     movieArray = data.Search
     return movieArray
 
 }
 
-getMovies().catch(error => {
-    error.message
-})
-
-const awaitMovie = async () =>{
-    const result = await getMovies()
-    console.log(result[0].Poster)
+const getMovieId = async () =>{  //Getting movie id
+    let result = await getMovies()
+    let moviesIdList = []
     for (entry in result){
-      container.innerHTML += `<div id = "poster-container${entry}">
-      <h1>${result[entry].Title}</h1>
-      <p>${result[entry].Year}</p>
-      <img src =${result[entry].Poster}>
-      </div>
-      `
+        moviesIdList.push(result[entry].imdbID)
+    }
+    return moviesIdList
+}
+
+class MoviePost{
+    constructor(title, director,actors, released, imdbRating, runtime, plot, poster, imdbID){
+       this.title = title
+       this.director = director
+       this.actors = actors
+       this.released = released
+       this.imdbRating = imdbRating
+       this.runtime = runtime
+       this.plot = plot
+       this.poster = poster
+       this.imdbID = imdbID
+    }
+    getMovieHtml(){
+        const {title, director,actors, released, imdbRating, runtime, plot, poster,imdbID,} = this
+        return `
+            <div id = "${title}">
+            <h1>${title}</h1>
+            <h2>${director}</h1>
+            <img src="${poster}" alt="Movie poster">
+            <p>Cast: ${actors} Released: ${released} Runtime: ${runtime} Rating: ${imdbRating}</p> 
+            <p>${plot}</p>
+            </div>
+        `
+        
     }
 }
+
+const getFullMoviedata = async () =>{
+    let moviesId = await getMovieId() //Getting full movie info
+    let fullDataArray = []
+    for (let id in moviesId){
+       let response = await fetch (`http://www.omdbapi.com/?i=${moviesId[id]}&apikey=33902d14`)
+       let data = await response.json()
+       fullDataArray.push(data)
+    }
+    
+    fullDataArray.forEach((movie) => {
+        let post = new MoviePost(movie.Title,movie.Director, movie.Actors, movie.Released, movie.imdbRating,movie.Runtime,movie.Plot,movie.Poster, movie.imdbID)
+        container.innerHTML += post.getMovieHtml()
+    })
+    for(let i = 0; i < 10; i++){
+        const button = document.createElement("button")
+        button.innerHTML = "Add to watch list"
+        button.id = fullDataArray[i].imdbID
+        let title = fullDataArray[i].Title
+        const buttonContainer = document.getElementById(title)
+        button.addEventListener("click", function (){ //Cia siunciamas kodas i Python
+            console.log(button.id)
+        })
+        buttonContainer.appendChild(button)
+        console.log(container)
+    }
+
+}
+
+
