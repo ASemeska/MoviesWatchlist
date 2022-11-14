@@ -2,11 +2,12 @@
 {% block title%}Watchlist{% endblock %}
 
 {% block content%}
-{% for post in posts %}
-  <li><h2>{{ post[0] }}</h2>
-      {% for column in post %}
-          {% if not loop.first %}{{ column }}<br />{% endif %}
-      {% endfor %}
-  </li>
-{% endfor %}
+<form action="#" method="POST" style="display: none;">
+  <label for="movie-name"></label>
+  <input type="text" id="movie-name" placeholder="Enter movie name">
+  <input type="submit" id="submit-movie" value="Search">
+  </form>
+  <button id="watchlist-btn">Watchlist</button>
+  <div id="container"></div>
+
 {% endblock %}

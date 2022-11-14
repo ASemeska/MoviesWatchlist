@@ -21,6 +21,7 @@ app.config['SECRET_KEY'] = '152asdqwe4887159a'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db, render_as_batch=True)
 movie_set = set()
+movie_list = []
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
@@ -96,32 +97,47 @@ def register():
 def user():
     return render_template("user.html")
     
+
+
+@app.route('/watchlist', methods=['GET', 'POST'])
+def watchlist():
+    return render_template("watchlist.html",)
+
+@app.route('/display-watchlist', methods=['GET', 'POST'])
+def display_Watchlist():
+    conn = get_db_connection()
+    posts = conn.execute('SELECT * FROM watchlist_item').fetchall()
+    for post in posts:
+        movie_list.append(post[0])
+    res = make_response(jsonify(movie_list))
+    return res
+
 @app.route("/user-watchlist", methods=['GET', 'POST'])
 def get_Watchlist():
     req = request.get_json()
-  
     movie_set.add(req)
     for x in movie_set:
         exists = Watchlist_item.query.filter_by(id = x).first()
         if exists:
-            print("it exists")
+            pass
         else:
             new_entry = Watchlist_item(id = x)
             db.session.add(new_entry)
             db.session.commit()
-        
-       
+    return movie_set
 
-    res = make_response(jsonify(req), 200)
-    return res
 
-@app.route('/watchlist', methods=['GET', 'POST'])
-def display_Watchlist():
-    conn = get_db_connection()
-    posts = conn.execute('SELECT * FROM watchlist_item').fetchall()
+@app.route("/remove-user-watchlist", methods=['GET', 'POST'])
+def remove_from_watchlist():
+    req = request.get_json()
+    print(req)
+    Watchlist_item.query.filter_by(id = req).delete()
+    db.session.commit()
+    movie_list.append(req)
+    print(movie_list)
 
-        
-    return render_template("watchlist.html", posts=posts)
+    return movie_list
+
   
     
 
