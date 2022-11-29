@@ -12,7 +12,8 @@ import sqlite3
 basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'database.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://vbnrhfbodcysfp:4569fa47e2c24828c270bb741d5183b32d868a6858196d1fc300234d6e0223ba@ec2-54-163-34-107.compute-1.amazonaws.com:5432/ddqf6nj4n12gjl'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'database.db')
 app.config['SECRET_KEY'] = '152asdqwe4887159a'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db, render_as_batch=True)
