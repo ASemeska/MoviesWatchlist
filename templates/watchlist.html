@@ -1,13 +1,43 @@
 {% extends "base.html" %}
 {% block title%}Watchlist{% endblock %}
 
+
+{% block navbbar %}
+<header>
+
+  <div>
+    <nav>
+        <ul class="navbar-container">
+            <li><a href="{{url_for('user')}}" class="list-item btn btn-outline-secondary">Back to Search</a></li>
+            <button id="watchlist-btn" class="list-item btn btn-outline-secondary">Show watchlist</button>
+        </ul>
+        
+    </nav>
+  </div> <!-- / .container -->
+
+
+
+</header> 
+
+{% endblock %}
+
+
 {% block content%}
+<div class='tetrominos' id="tetrominos">
+  <div class='tetromino box1'></div>
+  <div class='tetromino box2'></div>
+  <div class='tetromino box3'></div>
+  <div class='tetromino box4'></div>
+</div>
+
+
+
 <form action="#" method="POST" style="display: none;">
   <label for="movie-name"></label>
   <input type="text" id="movie-name" placeholder="Enter movie name">
   <input type="submit" id="submit-movie" value="Search">
   </form>
-  <button id="watchlist-btn">Watchlist</button>
+  
   <div id="container"></div>
 
 {% endblock %}

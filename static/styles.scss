@@ -1,0 +1,372 @@
+$main-font-size: 1.125rem;
+$font-standart: 300;
+$font-bold: 600;
+$side-margin: 0.4em;
+$container-side-margin: 0.8em;
+$opacity-color: rgb(0, 0, 0, 0.2);
+$light-color: #bdc3c7;
+$dark-color: #2c3e50;
+$break-point: 768px;
+$w: 96px;
+$h: 112px;
+$xspace: $w/2;
+$yspace: $h/4 - 1;
+$speed: 1.5s;
+
+
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    font-size: $main-font-size;
+    font-weight: $font-standart;
+    background-color: $light-color;
+}
+
+.tetromino {
+    width: $w;
+    height: $h;
+    position: absolute;
+    transition: all ease .3s;
+    background: url('data:image/svg+xml;utf-8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 684"%3E%3Cpath fill="%23010101" d="M305.7 0L0 170.9v342.3L305.7 684 612 513.2V170.9L305.7 0z"/%3E%3Cpath fill="%23fff" d="M305.7 80.1l-233.6 131 233.6 131 234.2-131-234.2-131"/%3E%3C/svg%3E') no-repeat top center;
+  }
+  
+  .box1 {
+    animation: tetromino1 $speed ease-out infinite;
+  }
+  .box2 {
+    animation: tetromino2 $speed ease-out infinite;
+  }
+  .box3 {
+    animation: tetromino3 $speed ease-out infinite;
+    z-index: 2;
+  }
+  .box4 {
+    animation: tetromino4 $speed ease-out infinite;
+  }
+  
+  @keyframes tetromino1 {
+    0%, 40% { 
+      /* compose logo *//* 1 on 3 *//* L-shape */
+      transform: translate(0,0);
+    } 50% {
+      /* pre-box */
+      transform: translate($xspace,-$yspace);
+    } 60%, 100% {
+      /* box *//* compose logo */
+      transform: translate($xspace*2,0);
+    }
+  }
+  
+  @keyframes tetromino2 {
+    0%, 20% { 
+      /* compose logo *//* 1 on 3 */
+      transform: translate($xspace*2, 0px);
+    } 40%, 100% { 
+      /* L-shape *//* box *//* compose logo */
+      transform: translate($xspace*3, $yspace);
+    }
+  }
+  
+  @keyframes tetromino3 {
+    0% { 
+      /* compose logo */
+      transform: translate($xspace*3, $yspace);
+    } 20%, 60% { 
+      /* 1 on 3 *//* L-shape *//* box */
+      transform: translate($xspace*2, $yspace*2);
+    } 90%, 100% { 
+      /* compose logo */
+      transform: translate($xspace, $yspace);
+    }
+  }
+  
+  @keyframes tetromino4 {
+    0%, 60% {
+      /* compose logo *//* 1 on 3 *//* L-shape *//* box */
+      transform: translate($xspace, $yspace);
+    } 90%, 100% { 
+      /* compose logo */
+      transform: translate(0, 0);
+    }
+  }//   Loader end
+
+
+
+.tetrominos {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-$h, -$w);
+}
+
+.text{
+  color: $light-color;
+}
+
+.title{
+  color: black;
+}
+
+
+.search-bar{
+  width: 75%;
+  margin-top: 0.5em;
+  padding-bottom: 0.3em;
+  border-color: $light-color;
+}
+
+
+.navbar-container{
+  padding: 0;
+  padding-bottom: 1em;
+  display: flex;
+  justify-content: flex-end;
+  list-style: none;
+  background: linear-gradient(to top, $light-color, $dark-color);
+  
+}
+
+.list-item{
+  margin: $side-margin;
+  color: $light-color
+}
+
+.list-item:active :hover{
+  margin: $side-margin;
+  background-color: $light-color
+}
+
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0;
+  margin: 0 auto;
+}
+
+
+.post-container{
+    margin: 0 auto;
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.post-content-container{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.post-content-container > img{
+  min-width: 80%;
+  min-height: 80px;
+  order: -1;
+  margin: 0 auto;
+}
+
+.title-direcctor{
+  width: 90%;
+  border-bottom: 1px solid $light-color;
+}
+
+
+.title{
+  font-size: 1.5rem;
+  margin: $side-margin;
+  
+
+}
+
+.director{
+  min-width: 100%;
+  font-size: $main-font-size;
+  margin: $side-margin;
+}
+
+
+.small-text{
+  margin-top: 1em;
+  margin-left: $side-margin;
+  width: 90%;
+  align-items: center;
+   
+}
+
+.post-content-container-btn{
+  margin-left: $side-margin;
+  
+}
+
+
+.title{
+    width: 90%;
+}
+
+.login-page-container{
+  display: flex;
+  flex-direction: column;
+
+}
+
+.form{
+  width: 80%;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  
+}
+
+.form-container{
+  width: 50%;
+  margin: 0 auto;
+}
+
+
+.input, .btn-form{
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #404040;
+  margin-bottom: 0.5em;
+}
+
+
+.input{
+  font-family: inherit;
+  margin-bottom: 0.75em;
+  text-align: inherit;
+  padding: 0.25em;
+  transform: scale(1);
+  transition: transform 250ms;
+  
+}
+
+.btn-form{
+  background-image: linear-gradient(90deg,#FFA51D, #FF713B);
+  color: #FFF;
+  transform: scale(1);
+  transition: transform 250ms;
+  border: none;
+
+}
+
+.btn-form:hover, .btn-form:focus{
+  transform: scale(1.1);
+  
+}
+
+.btn-form:hover, .btn-form:focus{
+  color: #FFF
+}
+
+.lorem-text{
+  width: 100%;
+ margin-left: auto;
+ margin-right: auto;
+}
+
+
+.intro {
+  width: 100%;
+  background-color: $dark-color;
+  background-image: url(../static/WallpaperDog-5543602.jpg);
+  background-blend-mode: multiply;
+  background-position: center;
+  background-size: cover;
+  padding: 0 .5em 2em;
+  display:flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 50vh;
+ 
+}
+
+.top-text {
+  font-size: 0.625rem;
+  margin: 0 auto;
+  padding-top: 2px;
+  color: $light-color;
+  font-weight: 900;
+  text-transform: uppercase;
+  order: -1;
+  border-top: 5px solid #FF713B;
+  border-image: linear-gradient(to top, $light-color, $dark-color) 1;
+}
+
+
+
+@media(min-width: $break-point){
+
+  .container{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+    justify-content: space-between;
+  }
+  .intro{
+    width:100%;
+  }
+
+
+  .form-container{
+    width: 30%;
+  }
+  .form{
+   margin: 10em 16em;
+
+  }
+
+  .post-container{
+    flex-direction: column;
+  }
+
+  .post-content-container > img{
+    margin: $side-margin;
+    min-width: 10%;
+ }
+ .title-direcctor{
+  order: -1;
+  align-content: flex-start;
+ }
+
+ .small-text{
+  width: 80%;
+ }
+
+}
+
+
+
+
+
+
+
+// post-container
+// title
+//director
+//poster-img
+//small-text
+//plot-text
+// 
+// 
+//
+//
+//
+//
+// 
+// 
+//
+//
+//
+//
+// 
+// 
+//
+//
+//
+//
+// 

@@ -1,17 +1,13 @@
 import os
-from flask import Flask, render_template, redirect, url_for, jsonify, make_response, request
-from flask_login import LoginManager,UserMixin,login_user
+from flask import Flask, render_template, redirect, url_for, jsonify, make_response, request, flash
+from flask_login import LoginManager,UserMixin,login_user, login_required, logout_user, current_user
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
-from wtforms import StringField,PasswordField,SubmitField,IntegerField, FloatField
+from wtforms import StringField,PasswordField,SubmitField
 from wtforms.validators import DataRequired, ValidationError, EqualTo
-import requests
-import json
 import sqlite3
-
-
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
@@ -26,7 +22,6 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-
 def get_db_connection():
     conn = sqlite3.connect('database.db')
     conn.row_factory = sqlite3.Row
@@ -38,9 +33,16 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(20), nullable=False, unique=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(80), nullable=False)
+    watchlist_item = db.relationship('Watchlist_item', backref='user')
+
+    
+    def __repr__(self):
+            return '<Username %r>' % self.username
+
 
 class Watchlist_item(db.Model):
     id = db.Column(db.String(20), primary_key=True, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 @login_manager.user_loader
 def load_user(user_email):
@@ -78,6 +80,7 @@ def home():
             if bcrypt.check_password_hash(user.password, form.password.data):
                login_user(user)
                return redirect(url_for('user'))
+        flash("Something went wrong, please try again or register new account!")
     return render_template('login.html', form=form)
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -88,32 +91,42 @@ def register():
         new_user = User(username=form.username.data, email= form.email.data, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
+        flash("Registered sucessfully!")
         return redirect(url_for('my_login'))
     return render_template('register.html', form=form)
 
 
 
 @app.route("/user", methods=['GET', 'POST'])
+@login_required
 def user():
     return render_template("user.html")
     
 
 
 @app.route('/watchlist', methods=['GET', 'POST'])
+@login_required
 def watchlist():
     return render_template("watchlist.html",)
 
 @app.route('/display-watchlist', methods=['GET', 'POST'])
+@login_required
 def display_Watchlist():
-    conn = get_db_connection()
-    posts = conn.execute('SELECT * FROM watchlist_item').fetchall()
+    id = current_user.id
+    posts = Watchlist_item.query.all()
     for post in posts:
-        movie_list.append(post[0])
+        if post.user_id == id:
+            movie_list.append(post.id)
+        else:
+            pass
     res = make_response(jsonify(movie_list))
     return res
 
+
 @app.route("/user-watchlist", methods=['GET', 'POST'])
+@login_required
 def get_Watchlist():
+    id = current_user.id
     req = request.get_json()
     movie_set.add(req)
     for x in movie_set:
@@ -121,24 +134,45 @@ def get_Watchlist():
         if exists:
             pass
         else:
-            new_entry = Watchlist_item(id = x)
+            new_entry = Watchlist_item(id = x, user_id = id)
             db.session.add(new_entry)
             db.session.commit()
     return movie_set
 
 
 @app.route("/remove-user-watchlist", methods=['GET', 'POST'])
+@login_required
 def remove_from_watchlist():
     req = request.get_json()
     print(req)
     Watchlist_item.query.filter_by(id = req).delete()
     db.session.commit()
-    movie_list.append(req)
+    movie_list.remove(req)
     print(movie_list)
 
     return movie_list
 
-  
+@app.route('/logout', methods=['GET', 'POST'])
+@login_required
+def logout():
+	logout_user()
+	
+	return redirect(url_for('my_login'))
+
+
+############CUSTOM ERRORS############ 
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("404.html"), 404
+
+@app.errorhandler(500)
+def page_not_found(e):
+    return render_template("500.html"), 500
+
+
+
+
     
 
 

@@ -1,13 +1,54 @@
 {% extends "base.html" %}
 {% block title%}Movie search{% endblock %}
 
+{% block navbbar %}
+<header>
+
+  <div>
+    <nav>
+        <ul class="navbar-container">
+            <li><a href="{{url_for('watchlist')}}" class="list-item btn btn-outline-secondary" id="watchlist-btn">My Watchlist</a></li>
+            <li><a href="{{url_for('my_login')}}" class="list-item btn btn-outline-secondary" id="watchlist-btn">Logout</a></li>
+        </ul>
+        
+    </nav>
+  </div> <!-- / .container -->
+
+
+
+</header> 
+{% endblock %}
+
+{% for message in get_flashed_messages() %}
+
+	<div class="alert alert-warning alert-dismissible fade show" role="alert">
+	  {{ message }}
+	  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+
+{% endfor %}
+
+
+
 {% block content%}
-<form action="#" method="POST">
-<label for="movie-name"></label>
-<input type="text" id="movie-name" placeholder="Enter movie name">
-<input type="submit" id="submit-movie" value="Search">
-</form>
-<button id="watchlist-btn">Watchlist</button>
+<div class='tetrominos' id="tetrominos">
+    <div class='tetromino box1'></div>
+    <div class='tetromino box2'></div>
+    <div class='tetromino box3'></div>
+    <div class='tetromino box4'></div>
+  </div>
+
+
+
+  <form action="#" method="POST">
+    <label for="movie-name"></label>
+    <input type="text" id="movie-name" placeholder="Enter movie name" class="search-bar">
+    <input type="submit" id="submit-movie" value="search" class="btn btn-secondary">
+    </form>
+    
+
+
+
 <div id="container"></div>
 
 {% endblock %}

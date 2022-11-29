@@ -1,17 +1,45 @@
 {% extends "base.html"%}
 {% block title%}Register page{% endblock %}
 {% block content%}
-        <form action="#" method="POST">
-             {{form.hidden_tag()}}
-        <label for="input-submit">Register</label>
-        <p>Username:</p>
-        <p>{{form.username(class_="input-submit")}}</p>
-        <p>Email:</p>
-        <p>{{form.email(class_="input-submit")}}</p>
-        <p>Password:</p>
-        <p>{{form.password(class_="input-submit")}}</p>
-        <p>Repeat Password:</p>
-        <p>{{form.approved_password(class_="input-submit")}}</p>
-        <p>{{form.submit(class_="form-btn")}}</p>
-    </form>   
+{% for message in get_flashed_messages() %}
+
+	<div class="alert alert-warning alert-dismissible fade show" role="alert">
+	  {{ message }}
+	  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+
+{% endfor %}
+
+<div class="container">
+    <div class="intro">
+        <h1 class="title">Register to use 
+                <strong>the best Movies Watchlist</strong> 
+            in town!
+        </h1>
+        <p class="text">Join us for this live webinar</p>
+        <p class="top-text">Easy to use</p>
+    </div>
+    
+    
+    <div class="form-container">
+        <form action="#" method="POST" class="form">
+            {{form.hidden_tag()}}
+            <h2>Register down below:</h2>
+            <p class="lorem-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, iste.</p>
+       <p>{{form.username(class_="input", placeholder_="Your username")}}</p>
+       <p>{{form.email(class_="input", placeholder_="Your email" )}}</p>
+       <p>{{form.password(class_="input", placeholder_="Your password")}}</p>
+       <p>{{form.approved_password(class_="input", placeholder_="Repeat Your password")}}</p>
+       <p>{{form.submit(class_="btn-form")}}</p>
+       <a href="{{url_for('my_login')}}" class="btn btn-form">Back to Login</a>
+    </form>  
+    
+    
+    </div>
+
+
+</div>
+
+
+ 
 {% endblock %}

@@ -2,14 +2,47 @@
 {% block title%}Login page{% endblock %}
 
 {% block content%}
-    <form action="#" method="POST">
-            {{form.hidden_tag()}}
-        <label for="input-submit">Log in</label>
-        <p>Username:</p>
-        <p>{{form.username(class_="input-submit")}}</p>
-        <p>Password:</p>
-        <p>{{form.password(class_="input-submit")}}</p>
-        <p>{{form.submit(class_="form-btn")}}</p>
-   </form> 
+{% for message in get_flashed_messages() %}
+
+	<div class="alert alert-warning alert-dismissible fade show" role="alert">
+	  {{ message }}
+	  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+
+{% endfor %}
+
+
+<div class="container">
+
+        <div class="intro">
+            <h1 class="title">Login to use 
+                    <strong>the best Movies Watchlist</strong> 
+                in town!
+            </h1>
+            <p class="text">Join us for this live webinar</p>
+            <p class="top-text">Easy to use</p>
+        </div>
+       
+    
+
+    
+    
+        <div class="form-container">
+            <form action="#" method="POST" class="form">
+                {{form.hidden_tag()}}
+                <h2>Log in down below:</h2>
+                <p class="lorem-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, iste.</p>
+            {{form.username(class_="input", placeholder_="Your username")}}
+            {{form.password(class_="input", placeholder_="Your password")}}
+           {{form.submit(class_="btn-form")}}
+            <a href="{{url_for('register')}}" class="btn btn-form">Register</a>
+       </form> 
+
+        </div>
+
+
+
+</div>
+
 
 {% endblock %}
