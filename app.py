@@ -7,12 +7,12 @@ from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
 from wtforms import StringField,PasswordField,SubmitField
 from wtforms.validators import DataRequired, ValidationError, EqualTo
-import sqlite3
+
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://vbnrhfbodcysfp:4569fa47e2c24828c270bb741d5183b32d868a6858196d1fc300234d6e0223ba@ec2-54-163-34-107.compute-1.amazonaws.com:5432/ddqf6nj4n12gjl'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://ciquibhcavybja:1fba98c44a2064244121712dc08e88f44a39d07eadbaf3a67c31f6bfd988dcf4@ec2-52-4-104-184.compute-1.amazonaws.com:5432/dbb8a7dq03c46f'
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'database.db')
 app.config['SECRET_KEY'] = '152asdqwe4887159a'
 db = SQLAlchemy(app)
@@ -23,10 +23,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-def get_db_connection():
-    conn = sqlite3.connect('database.db')
-    conn.row_factory = sqlite3.Row
-    return conn
+
 #++++++++++++++++CLASES++++++++++++++++#
 class User(db.Model, UserMixin):
     __tablename__ = "user"
