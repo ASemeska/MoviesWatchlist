@@ -12,7 +12,7 @@ from wtforms.validators import DataRequired, ValidationError, EqualTo
 basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://ciquibhcavybja:1fba98c44a2064244121712dc08e88f44a39d07eadbaf3a67c31f6bfd988dcf4@ec2-52-4-104-184.compute-1.amazonaws.com:5432/dbb8a7dq03c46f'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://httmxggkytfjpo:7fc69a264c8c9cdbd16a4436fea15bf222902b5354f07aeb5d4d7628b551ebe4@ec2-3-229-165-146.compute-1.amazonaws.com:5432/dcismu4mjlhf1j'
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'database.db')
 app.config['SECRET_KEY'] = '152asdqwe4887159a'
 db = SQLAlchemy(app)
